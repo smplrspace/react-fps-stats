@@ -52,14 +52,13 @@ class FPSStats extends Component {
       frames: state.frames + 1
     }))
     if (currentTime > this.state.prevTime + 1000) {
-      let fps = Math.round(
+      const lastFps = Math.round(
         (this.state.frames * 1000) / (currentTime - this.state.prevTime)
       )
-      fps = this.state.fps.concat(fps)
-      let sliceStart = Math.min(fps.length - GRAPH_WIDTH, 0)
-      fps = fps.slice(sliceStart, fps.length)
+      const fps = this.state.fps
+      fps.push(lastFps)
       this.setState({
-        fps: fps,
+        fps: fps.slice(-GRAPH_WIDTH),
         frames: 0,
         prevTime: currentTime
       })
