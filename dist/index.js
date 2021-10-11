@@ -83,7 +83,7 @@ function (_Component) {
   }, {
     key: "calcFPS",
     value: function calcFPS() {
-      var currentTime = +new Date();
+      var currentTime = Date.now();
       this.setState(function (state) {
         return {
           frames: state.frames + 1

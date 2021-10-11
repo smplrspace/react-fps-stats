@@ -47,7 +47,7 @@ class FPSStats extends Component {
   }
 
   calcFPS () {
-    const currentTime = +new Date()
+    const currentTime = Date.now()
     this.setState(state => ({
       frames: state.frames + 1
     }))
