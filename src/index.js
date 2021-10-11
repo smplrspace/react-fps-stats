@@ -21,7 +21,7 @@ class FPSStats extends Component {
 
   constructor (props) {
     super(props)
-    const currentTime = +new Date()
+    const currentTime = Date.now()
     this.state = {
       frames: 0,
       startTime: currentTime,

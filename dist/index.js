@@ -47,7 +47,7 @@ function (_Component) {
     _classCallCheck(this, FPSStats);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(FPSStats).call(this, props));
-    var currentTime = +new Date();
+    var currentTime = Date.now();
     _this.state = {
       frames: 0,
       startTime: currentTime,
