@@ -47,7 +47,7 @@ function (_Component) {
     _classCallCheck(this, FPSStats);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(FPSStats).call(this, props));
-    var currentTime = +new Date();
+    var currentTime = Date.now();
     _this.state = {
       frames: 0,
       startTime: currentTime,
@@ -83,7 +83,7 @@ function (_Component) {
   }, {
     key: "calcFPS",
     value: function calcFPS() {
-      var currentTime = +new Date();
+      var currentTime = Date.now();
       this.setState(function (state) {
         return {
           frames: state.frames + 1
@@ -91,12 +91,11 @@ function (_Component) {
       });
 
       if (currentTime > this.state.prevTime + 1000) {
-        var fps = Math.round(this.state.frames * 1000 / (currentTime - this.state.prevTime));
-        fps = this.state.fps.concat(fps);
-        var sliceStart = Math.min(fps.length - GRAPH_WIDTH, 0);
-        fps = fps.slice(sliceStart, fps.length);
+        var lastFps = Math.round(this.state.frames * 1000 / (currentTime - this.state.prevTime));
+        var fps = this.state.fps;
+        fps.push(lastFps);
         this.setState({
-          fps: fps,
+          fps: fps.slice(-GRAPH_WIDTH),
           frames: 0,
           prevTime: currentTime
         });
