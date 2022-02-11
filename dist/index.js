@@ -113,8 +113,7 @@ function FPSStats(_ref) {
       right: '3px',
       bottom: '3px',
       height: "".concat(graphHeight, "px"),
-      backgroundColor: '#282844',
-      MozBoxSizing: 'border-box',
+      background: '#282844',
       boxSizing: 'border-box'
     }
   }, fps.map(function (frame, i) {
@@ -126,8 +125,7 @@ function FPSStats(_ref) {
         right: "".concat(FPSlen - 1 - i, "px"),
         height: "".concat(graphHeight * frame / MaxFPS, "px"),
         width: '1px',
-        backgroundColor: '#00ffff',
-        MozBoxSizing: 'border-box',
+        background: '#00ffff',
         boxSizing: 'border-box'
       }
     });

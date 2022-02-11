@@ -74,8 +74,7 @@ function FPSStats ({
           right: '3px',
           bottom: '3px',
           height: `${graphHeight}px`,
-          backgroundColor: '#282844',
-          MozBoxSizing: 'border-box',
+          background: '#282844',
           boxSizing: 'border-box'
         }}
       >
@@ -88,8 +87,7 @@ function FPSStats ({
               right: `${FPSlen - 1 - i}px`,
               height: `${(graphHeight * frame) / MaxFPS}px`,
               width: '1px',
-              backgroundColor: '#00ffff',
-              MozBoxSizing: 'border-box',
+              background: '#00ffff',
               boxSizing: 'border-box'
             }}
           />
