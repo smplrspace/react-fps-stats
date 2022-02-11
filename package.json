@@ -16,7 +16,7 @@
     ]
   },
   "peerDependencies": {
-    "react": ">16"
+    "react": ">=16"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
