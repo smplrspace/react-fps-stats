@@ -56,7 +56,7 @@ function FPSStats(_ref) {
         max: Math.max(state.max, nextFPS),
         len: Math.min(state.len + 1, graphWidth),
         fps: [].concat(_toConsumableArray(state.fps), [nextFPS]).slice(-graphWidth),
-        frames: 0,
+        frames: 1,
         prevTime: currentTime
       };
     } else {
