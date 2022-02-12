@@ -7,6 +7,12 @@ exports["default"] = void 0;
 
 var _react = require("react");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -41,58 +47,57 @@ function FPSStats(_ref) {
       _ref$graphWidth = _ref.graphWidth,
       graphWidth = _ref$graphWidth === void 0 ? 70 : _ref$graphWidth;
 
-  var _useState = (0, _react.useState)({
+  var _useReducer = (0, _react.useReducer)(function (state) {
+    var currentTime = Date.now();
+
+    if (currentTime > state.prevTime + 1000) {
+      var nextFPS = Math.round(state.frames * 1000 / (currentTime - state.prevTime));
+      return {
+        max: Math.max(state.max, nextFPS),
+        len: Math.min(state.len + 1, graphWidth),
+        fps: [].concat(_toConsumableArray(state.fps), [nextFPS]).slice(-graphWidth),
+        frames: 0,
+        prevTime: currentTime
+      };
+    } else {
+      return _objectSpread(_objectSpread({}, state), {}, {
+        frames: state.frames + 1
+      });
+    }
+  }, {
+    len: 0,
+    max: 0,
     frames: 0,
     prevTime: Date.now(),
     fps: []
   }),
-      _useState2 = _slicedToArray(_useState, 2),
-      state = _useState2[0],
-      setState = _useState2[1];
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      state = _useReducer2[0],
+      dispatch = _useReducer2[1];
 
   var requestRef = (0, _react.useRef)();
 
-  var calcFPS = function calcFPS() {
-    setState(function (_ref2) {
-      var frames = _ref2.frames,
-          fps = _ref2.fps,
-          prevTime = _ref2.prevTime;
-      var currentTime = Date.now();
-
-      if (currentTime > prevTime + 1000) {
-        var lastFPS = Math.round(frames * 1000 / (currentTime - prevTime));
-        return {
-          fps: [].concat(_toConsumableArray(fps), [lastFPS]).slice(-graphWidth),
-          frames: 0,
-          prevTime: currentTime
-        };
-      } else {
-        return {
-          prevTime: prevTime,
-          fps: fps,
-          frames: frames + 1
-        };
-      }
-    });
-    requestRef.current = requestAnimationFrame(calcFPS);
+  var tick = function tick() {
+    dispatch();
+    requestRef.current = requestAnimationFrame(tick);
   };
 
   (0, _react.useEffect)(function () {
-    requestRef.current = requestAnimationFrame(calcFPS);
+    requestRef.current = requestAnimationFrame(tick);
     return function () {
       return cancelAnimationFrame(requestRef.current);
     };
   }, []);
-  var fps = state.fps;
-  var MaxFPS = Math.max.apply(Math, _toConsumableArray(fps));
-  var FPSlen = fps.length;
+  var fps = state.fps,
+      max = state.max,
+      len = state.len;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       zIndex: 999999,
       position: 'fixed',
-      height: '46px',
-      width: "".concat(graphWidth + 6, "px"),
-      padding: '3px',
+      height: 46,
+      width: graphWidth + 6,
+      padding: 3,
       backgroundColor: '#000',
       color: '#00ffff',
       fontSize: '9px',
@@ -106,13 +111,13 @@ function FPSStats(_ref) {
       bottom: bottom,
       left: left
     }
-  }, /*#__PURE__*/React.createElement("span", null, fps[FPSlen - 1], " FPS"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, fps[len - 1], " FPS"), /*#__PURE__*/React.createElement("div", {
     style: {
       position: 'absolute',
-      left: '3px',
-      right: '3px',
-      bottom: '3px',
-      height: "".concat(graphHeight, "px"),
+      left: 3,
+      right: 3,
+      bottom: 3,
+      height: graphHeight,
       background: '#282844',
       boxSizing: 'border-box'
     }
@@ -121,10 +126,10 @@ function FPSStats(_ref) {
       key: "fps-".concat(i),
       style: {
         position: 'absolute',
-        bottom: '0',
-        right: "".concat(FPSlen - 1 - i, "px"),
-        height: "".concat(graphHeight * frame / MaxFPS, "px"),
-        width: '1px',
+        bottom: 0,
+        right: "".concat(len - 1 - i, "px"),
+        height: "".concat(graphHeight * frame / max, "px"),
+        width: 1,
         background: '#00ffff',
         boxSizing: 'border-box'
       }

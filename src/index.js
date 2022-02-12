@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
 
 function FPSStats ({
   top = 0,
@@ -8,50 +8,54 @@ function FPSStats ({
   graphHeight = 29,
   graphWidth = 70
 }) {
-  const [state, setState] = useState({
-    frames: 0,
-    prevTime: Date.now(),
-    fps: []
-  })
-
-  const requestRef = useRef()
-  const calcFPS = () => {
-    setState(({ frames, fps, prevTime }) => {
+  const [state, dispatch] = useReducer(
+    state => {
       const currentTime = Date.now()
-      if (currentTime > prevTime + 1000) {
-        const lastFPS = Math.round((frames * 1000) / (currentTime - prevTime))
+      if (currentTime > state.prevTime + 1000) {
+        const nextFPS = Math.round(
+          (state.frames * 1000) / (currentTime - state.prevTime)
+        )
         return {
-          fps: [...fps, lastFPS].slice(-graphWidth),
+          max: Math.max(state.max, nextFPS),
+          len: Math.min(state.len + 1, graphWidth),
+          fps: [...state.fps, nextFPS].slice(-graphWidth),
           frames: 0,
           prevTime: currentTime
         }
       } else {
-        return {
-          prevTime,
-          fps,
-          frames: frames + 1
-        }
+        return { ...state, frames: state.frames + 1 }
       }
-    })
-    requestRef.current = requestAnimationFrame(calcFPS)
+    },
+    {
+      len: 0,
+      max: 0,
+      frames: 0,
+      prevTime: Date.now(),
+      fps: []
+    }
+  )
+
+  const requestRef = useRef()
+  const tick = () => {
+    dispatch()
+    requestRef.current = requestAnimationFrame(tick)
   }
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(calcFPS)
+    requestRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(requestRef.current)
   }, [])
 
-  const { fps } = state
-  const MaxFPS = Math.max(...fps)
-  const FPSlen = fps.length
+  const { fps, max, len } = state
+
   return (
     <div
       style={{
         zIndex: 999999,
         position: 'fixed',
-        height: '46px',
-        width: `${graphWidth + 6}px`,
-        padding: '3px',
+        height: 46,
+        width: graphWidth + 6,
+        padding: 3,
         backgroundColor: '#000',
         color: '#00ffff',
         fontSize: '9px',
@@ -66,14 +70,14 @@ function FPSStats ({
         left
       }}
     >
-      <span>{fps[FPSlen - 1]} FPS</span>
+      <span>{fps[len - 1]} FPS</span>
       <div
         style={{
           position: 'absolute',
-          left: '3px',
-          right: '3px',
-          bottom: '3px',
-          height: `${graphHeight}px`,
+          left: 3,
+          right: 3,
+          bottom: 3,
+          height: graphHeight,
           background: '#282844',
           boxSizing: 'border-box'
         }}
@@ -83,10 +87,10 @@ function FPSStats ({
             key={`fps-${i}`}
             style={{
               position: 'absolute',
-              bottom: '0',
-              right: `${FPSlen - 1 - i}px`,
-              height: `${(graphHeight * frame) / MaxFPS}px`,
-              width: '1px',
+              bottom: 0,
+              right: `${len - 1 - i}px`,
+              height: `${(graphHeight * frame) / max}px`,
+              width: 1,
               background: '#00ffff',
               boxSizing: 'border-box'
             }}
