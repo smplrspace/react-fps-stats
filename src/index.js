@@ -1,11 +1,12 @@
-import { useEffect, useReducer, useRef } from 'react'
+
+import React, { useEffect, useReducer, useRef } from 'react'
 
 function FPSStats ({
   top = 0,
   right = 'auto',
   bottom = 'auto',
   left = 0,
-  graphHeight = 29,
+  barHeight = 29,
   graphWidth = 70
 }) {
   const [state, dispatch] = useReducer(
@@ -77,7 +78,7 @@ function FPSStats ({
           left: 3,
           right: 3,
           bottom: 3,
-          height: graphHeight,
+          height: barHeight,
           background: '#282844',
           boxSizing: 'border-box'
         }}
@@ -89,7 +90,7 @@ function FPSStats ({
               position: 'absolute',
               bottom: 0,
               right: `${len - 1 - i}px`,
-              height: `${(graphHeight * frame) / max}px`,
+              height: `${(barHeight * frame) / max}px`,
               width: 1,
               background: '#00ffff',
               boxSizing: 'border-box'
