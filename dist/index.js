@@ -9,6 +9,10 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -43,13 +47,13 @@ function FPSStats(_ref) {
   var _ref$top = _ref.top,
       top = _ref$top === void 0 ? 0 : _ref$top,
       _ref$right = _ref.right,
-      right = _ref$right === void 0 ? 'auto' : _ref$right,
+      right = _ref$right === void 0 ? "auto" : _ref$right,
       _ref$bottom = _ref.bottom,
-      bottom = _ref$bottom === void 0 ? 'auto' : _ref$bottom,
+      bottom = _ref$bottom === void 0 ? "auto" : _ref$bottom,
       _ref$left = _ref.left,
       left = _ref$left === void 0 ? 0 : _ref$left,
-      _ref$barHeight = _ref.barHeight,
-      barHeight = _ref$barHeight === void 0 ? 29 : _ref$barHeight,
+      _ref$graphHeight = _ref.graphHeight,
+      graphHeight = _ref$graphHeight === void 0 ? 29 : _ref$graphHeight,
       _ref$graphWidth = _ref.graphWidth,
       graphWidth = _ref$graphWidth === void 0 ? 70 : _ref$graphWidth;
 
@@ -100,18 +104,18 @@ function FPSStats(_ref) {
   return /*#__PURE__*/_react["default"].createElement("div", {
     style: {
       zIndex: 999999,
-      position: 'fixed',
+      position: "fixed",
       height: 46,
       width: graphWidth + 6,
       padding: 3,
-      backgroundColor: '#000',
-      color: '#00ffff',
-      fontSize: '9px',
-      lineHeight: '10px',
-      fontFamily: 'Helvetica, Arial, sans-serif',
-      fontWeight: 'bold',
-      boxSizing: 'border-box',
-      pointerEvents: 'none',
+      backgroundColor: "#000",
+      color: "#00ffff",
+      fontSize: "9px",
+      lineHeight: "10px",
+      fontFamily: "Helvetica, Arial, sans-serif",
+      fontWeight: "bold",
+      boxSizing: "border-box",
+      pointerEvents: "none",
       top: top,
       right: right,
       bottom: bottom,
@@ -119,29 +123,37 @@ function FPSStats(_ref) {
     }
   }, /*#__PURE__*/_react["default"].createElement("span", null, fps[len - 1], " FPS"), /*#__PURE__*/_react["default"].createElement("div", {
     style: {
-      position: 'absolute',
+      position: "absolute",
       left: 3,
       right: 3,
       bottom: 3,
-      height: barHeight,
-      background: '#282844',
-      boxSizing: 'border-box'
+      height: graphHeight,
+      background: "#282844",
+      boxSizing: "border-box"
     }
   }, fps.map(function (frame, i) {
     return /*#__PURE__*/_react["default"].createElement("div", {
       key: "fps-".concat(i),
       style: {
-        position: 'absolute',
+        position: "absolute",
         bottom: 0,
         right: "".concat(len - 1 - i, "px"),
-        height: "".concat(barHeight * frame / max, "px"),
+        height: "".concat(graphHeight * frame / max, "px"),
         width: 1,
-        background: '#00ffff',
-        boxSizing: 'border-box'
+        background: "#00ffff",
+        boxSizing: "border-box"
       }
     });
   })));
 }
 
+FPSStats.propTypes = {
+  top: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  right: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  bottom: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  left: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  graphHeight: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  graphWidth: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number])
+};
 var _default = FPSStats;
 exports["default"] = _default;

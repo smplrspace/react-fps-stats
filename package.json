@@ -32,7 +32,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^1.0.1",
     "lint-staged": "^7.3.0",
-    "prettier-eslint-cli": "^5.0.0"
+    "prettier-eslint-cli": "^5.0.0",
+    "prop-types": "^15.8.1"
   },
   "license": "MIT",
   "keywords": [
