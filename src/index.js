@@ -1,126 +1,114 @@
-import React, { Component } from 'react'
+import React, { useEffect, useReducer, useRef } from 'react'
 import PropTypes from 'prop-types'
 
-const GRAPH_HEIGHT = 29
-const GRAPH_WIDTH = 70
-
-class FPSStats extends Component {
-  static propTypes = {
-    top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    left: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  }
-
-  static defaultProps = {
-    top: 0,
-    left: 0,
-    bottom: 'auto',
-    right: 'auto'
-  }
-
-  constructor (props) {
-    super(props)
-    const currentTime = Date.now()
-    this.state = {
+function FPSStats ({
+  top = 0,
+  right = 'auto',
+  bottom = 'auto',
+  left = 0,
+  graphHeight = 29,
+  graphWidth = 70
+}) {
+  const [state, dispatch] = useReducer(
+    state => {
+      const currentTime = Date.now()
+      if (currentTime > state.prevTime + 1000) {
+        const nextFPS = Math.round(
+          (state.frames * 1000) / (currentTime - state.prevTime)
+        )
+        return {
+          max: Math.max(state.max, nextFPS),
+          len: Math.min(state.len + 1, graphWidth),
+          fps: [...state.fps, nextFPS].slice(-graphWidth),
+          frames: 1,
+          prevTime: currentTime
+        }
+      } else {
+        return { ...state, frames: state.frames + 1 }
+      }
+    },
+    {
+      len: 0,
+      max: 0,
       frames: 0,
-      startTime: currentTime,
-      prevTime: currentTime,
+      prevTime: Date.now(),
       fps: []
     }
+  )
+
+  const requestRef = useRef()
+  const tick = () => {
+    dispatch()
+    requestRef.current = requestAnimationFrame(tick)
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return this.state.fps !== nextState.fps || this.props !== nextProps
-  }
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(requestRef.current)
+  }, [])
 
-  componentDidMount () {
-    const onRequestAnimationFrame = () => {
-      this.calcFPS()
-      this.afRequest = window.requestAnimationFrame(onRequestAnimationFrame)
-    }
-    this.afRequest = window.requestAnimationFrame(onRequestAnimationFrame)
-  }
+  const { fps, max, len } = state
 
-  componentWillUnmount () {
-    window.cancelAnimationFrame(this.afRequest)
-  }
-
-  calcFPS () {
-    const currentTime = Date.now()
-    this.setState(state => ({
-      frames: state.frames + 1
-    }))
-    if (currentTime > this.state.prevTime + 1000) {
-      const lastFps = Math.round(
-        (this.state.frames * 1000) / (currentTime - this.state.prevTime)
-      )
-      const fps = this.state.fps
-      fps.push(lastFps)
-      this.setState({
-        fps: fps.slice(-GRAPH_WIDTH),
-        frames: 0,
-        prevTime: currentTime
-      })
-    }
-  }
-
-  render () {
-    const { top, right, bottom, left } = this.props
-    const { fps } = this.state
-    const wrapperStyle = {
-      zIndex: 999999,
-      position: 'fixed',
-      height: '46px',
-      width: GRAPH_WIDTH + 6 + 'px',
-      padding: '3px',
-      backgroundColor: '#000',
-      color: '#00ffff',
-      fontSize: '9px',
-      lineHeight: '10px',
-      fontFamily: 'Helvetica, Arial, sans-serif',
-      fontWeight: 'bold',
-      MozBoxSizing: 'border-box',
-      boxSizing: 'border-box',
-      pointerEvents: 'none',
-      top,
-      right,
-      bottom,
-      left
-    }
-    const graphStyle = {
-      position: 'absolute',
-      left: '3px',
-      right: '3px',
-      bottom: '3px',
-      height: GRAPH_HEIGHT + 'px',
-      backgroundColor: '#282844',
-      MozBoxSizing: 'border-box',
-      boxSizing: 'border-box'
-    }
-    const barStyle = (height, i) => ({
-      position: 'absolute',
-      bottom: '0',
-      right: fps.length - 1 - i + 'px',
-      height: height + 'px',
-      width: '1px',
-      backgroundColor: '#00ffff',
-      MozBoxSizing: 'border-box',
-      boxSizing: 'border-box'
-    })
-    const maxFps = Math.max.apply(Math.max, fps)
-    return (
-      <div style={wrapperStyle}>
-        <span>{fps[fps.length - 1]} FPS</span>
-        <div style={graphStyle}>
-          {fps.map((fps, i) => {
-            const height = (GRAPH_HEIGHT * fps) / maxFps
-            return <div key={`fps-${i}`} style={barStyle(height, i)} />
-          })}
-        </div>
+  return (
+    <div
+      style={{
+        zIndex: 999999,
+        position: 'fixed',
+        height: 46,
+        width: graphWidth + 6,
+        padding: 3,
+        backgroundColor: '#000',
+        color: '#00ffff',
+        fontSize: '9px',
+        lineHeight: '10px',
+        fontFamily: 'Helvetica, Arial, sans-serif',
+        fontWeight: 'bold',
+        boxSizing: 'border-box',
+        pointerEvents: 'none',
+        top,
+        right,
+        bottom,
+        left
+      }}
+    >
+      <span>{fps[len - 1]} FPS</span>
+      <div
+        style={{
+          position: 'absolute',
+          left: 3,
+          right: 3,
+          bottom: 3,
+          height: graphHeight,
+          background: '#282844',
+          boxSizing: 'border-box'
+        }}
+      >
+        {fps.map((frame, i) => (
+          <div
+            key={`fps-${i}`}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: `${len - 1 - i}px`,
+              height: `${(graphHeight * frame) / max}px`,
+              width: 1,
+              background: '#00ffff',
+              boxSizing: 'border-box'
+            }}
+          />
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
+}
+
+FPSStats.propTypes = {
+  top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  right: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  left: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  graphHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  graphWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 export default FPSStats

@@ -1,190 +1,159 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var GRAPH_HEIGHT = 29;
-var GRAPH_WIDTH = 70;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-var FPSStats =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(FPSStats, _Component);
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-  function FPSStats(props) {
-    var _this;
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
-    _classCallCheck(this, FPSStats);
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(FPSStats).call(this, props));
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function FPSStats(_ref) {
+  var _ref$top = _ref.top,
+      top = _ref$top === void 0 ? 0 : _ref$top,
+      _ref$right = _ref.right,
+      right = _ref$right === void 0 ? 'auto' : _ref$right,
+      _ref$bottom = _ref.bottom,
+      bottom = _ref$bottom === void 0 ? 'auto' : _ref$bottom,
+      _ref$left = _ref.left,
+      left = _ref$left === void 0 ? 0 : _ref$left,
+      _ref$graphHeight = _ref.graphHeight,
+      graphHeight = _ref$graphHeight === void 0 ? 29 : _ref$graphHeight,
+      _ref$graphWidth = _ref.graphWidth,
+      graphWidth = _ref$graphWidth === void 0 ? 70 : _ref$graphWidth;
+
+  var _useReducer = (0, _react.useReducer)(function (state) {
     var currentTime = Date.now();
-    _this.state = {
-      frames: 0,
-      startTime: currentTime,
-      prevTime: currentTime,
-      fps: []
-    };
-    return _this;
-  }
 
-  _createClass(FPSStats, [{
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      return this.state.fps !== nextState.fps || this.props !== nextProps;
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      var onRequestAnimationFrame = function onRequestAnimationFrame() {
-        _this2.calcFPS();
-
-        _this2.afRequest = window.requestAnimationFrame(onRequestAnimationFrame);
+    if (currentTime > state.prevTime + 1000) {
+      var nextFPS = Math.round(state.frames * 1000 / (currentTime - state.prevTime));
+      return {
+        max: Math.max(state.max, nextFPS),
+        len: Math.min(state.len + 1, graphWidth),
+        fps: [].concat(_toConsumableArray(state.fps), [nextFPS]).slice(-graphWidth),
+        frames: 1,
+        prevTime: currentTime
       };
-
-      this.afRequest = window.requestAnimationFrame(onRequestAnimationFrame);
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      window.cancelAnimationFrame(this.afRequest);
-    }
-  }, {
-    key: "calcFPS",
-    value: function calcFPS() {
-      var currentTime = Date.now();
-      this.setState(function (state) {
-        return {
-          frames: state.frames + 1
-        };
+    } else {
+      return _objectSpread(_objectSpread({}, state), {}, {
+        frames: state.frames + 1
       });
-
-      if (currentTime > this.state.prevTime + 1000) {
-        var lastFps = Math.round(this.state.frames * 1000 / (currentTime - this.state.prevTime));
-        var fps = this.state.fps;
-        fps.push(lastFps);
-        this.setState({
-          fps: fps.slice(-GRAPH_WIDTH),
-          frames: 0,
-          prevTime: currentTime
-        });
-      }
     }
   }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          top = _this$props.top,
-          right = _this$props.right,
-          bottom = _this$props.bottom,
-          left = _this$props.left;
-      var fps = this.state.fps;
-      var wrapperStyle = {
-        zIndex: 999999,
-        position: 'fixed',
-        height: '46px',
-        width: GRAPH_WIDTH + 6 + 'px',
-        padding: '3px',
-        backgroundColor: '#000',
-        color: '#00ffff',
-        fontSize: '9px',
-        lineHeight: '10px',
-        fontFamily: 'Helvetica, Arial, sans-serif',
-        fontWeight: 'bold',
-        MozBoxSizing: 'border-box',
-        boxSizing: 'border-box',
-        pointerEvents: 'none',
-        top: top,
-        right: right,
-        bottom: bottom,
-        left: left
-      };
-      var graphStyle = {
-        position: 'absolute',
-        left: '3px',
-        right: '3px',
-        bottom: '3px',
-        height: GRAPH_HEIGHT + 'px',
-        backgroundColor: '#282844',
-        MozBoxSizing: 'border-box',
-        boxSizing: 'border-box'
-      };
+    len: 0,
+    max: 0,
+    frames: 0,
+    prevTime: Date.now(),
+    fps: []
+  }),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      state = _useReducer2[0],
+      dispatch = _useReducer2[1];
 
-      var barStyle = function barStyle(height, i) {
-        return {
-          position: 'absolute',
-          bottom: '0',
-          right: fps.length - 1 - i + 'px',
-          height: height + 'px',
-          width: '1px',
-          backgroundColor: '#00ffff',
-          MozBoxSizing: 'border-box',
-          boxSizing: 'border-box'
-        };
-      };
+  var requestRef = (0, _react.useRef)();
 
-      var maxFps = Math.max.apply(Math.max, fps);
-      return _react.default.createElement("div", {
-        style: wrapperStyle
-      }, _react.default.createElement("span", null, fps[fps.length - 1], " FPS"), _react.default.createElement("div", {
-        style: graphStyle
-      }, fps.map(function (fps, i) {
-        var height = GRAPH_HEIGHT * fps / maxFps;
-        return _react.default.createElement("div", {
-          key: "fps-".concat(i),
-          style: barStyle(height, i)
-        });
-      })));
+  var tick = function tick() {
+    dispatch();
+    requestRef.current = requestAnimationFrame(tick);
+  };
+
+  (0, _react.useEffect)(function () {
+    requestRef.current = requestAnimationFrame(tick);
+    return function () {
+      return cancelAnimationFrame(requestRef.current);
+    };
+  }, []);
+  var fps = state.fps,
+      max = state.max,
+      len = state.len;
+  return /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      zIndex: 999999,
+      position: 'fixed',
+      height: 46,
+      width: graphWidth + 6,
+      padding: 3,
+      backgroundColor: '#000',
+      color: '#00ffff',
+      fontSize: '9px',
+      lineHeight: '10px',
+      fontFamily: 'Helvetica, Arial, sans-serif',
+      fontWeight: 'bold',
+      boxSizing: 'border-box',
+      pointerEvents: 'none',
+      top: top,
+      right: right,
+      bottom: bottom,
+      left: left
     }
-  }]);
+  }, /*#__PURE__*/_react["default"].createElement("span", null, fps[len - 1], " FPS"), /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      position: 'absolute',
+      left: 3,
+      right: 3,
+      bottom: 3,
+      height: graphHeight,
+      background: '#282844',
+      boxSizing: 'border-box'
+    }
+  }, fps.map(function (frame, i) {
+    return /*#__PURE__*/_react["default"].createElement("div", {
+      key: "fps-".concat(i),
+      style: {
+        position: 'absolute',
+        bottom: 0,
+        right: "".concat(len - 1 - i, "px"),
+        height: "".concat(graphHeight * frame / max, "px"),
+        width: 1,
+        background: '#00ffff',
+        boxSizing: 'border-box'
+      }
+    });
+  })));
+}
 
-  return FPSStats;
-}(_react.Component);
-
-_defineProperty(FPSStats, "propTypes", {
-  top: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
-  bottom: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
-  right: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
-  left: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number])
-});
-
-_defineProperty(FPSStats, "defaultProps", {
-  top: 0,
-  left: 0,
-  bottom: 'auto',
-  right: 'auto'
-});
-
+FPSStats.propTypes = {
+  top: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  right: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  bottom: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  left: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  graphHeight: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number]),
+  graphWidth: _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].number])
+};
 var _default = FPSStats;
-exports.default = _default;
+exports["default"] = _default;
