@@ -47,9 +47,9 @@ function FPSStats(_ref) {
   var _ref$top = _ref.top,
       top = _ref$top === void 0 ? 0 : _ref$top,
       _ref$right = _ref.right,
-      right = _ref$right === void 0 ? "auto" : _ref$right,
+      right = _ref$right === void 0 ? 'auto' : _ref$right,
       _ref$bottom = _ref.bottom,
-      bottom = _ref$bottom === void 0 ? "auto" : _ref$bottom,
+      bottom = _ref$bottom === void 0 ? 'auto' : _ref$bottom,
       _ref$left = _ref.left,
       left = _ref$left === void 0 ? 0 : _ref$left,
       _ref$graphHeight = _ref.graphHeight,
@@ -104,18 +104,18 @@ function FPSStats(_ref) {
   return /*#__PURE__*/_react["default"].createElement("div", {
     style: {
       zIndex: 999999,
-      position: "fixed",
+      position: 'fixed',
       height: 46,
       width: graphWidth + 6,
       padding: 3,
-      backgroundColor: "#000",
-      color: "#00ffff",
-      fontSize: "9px",
-      lineHeight: "10px",
-      fontFamily: "Helvetica, Arial, sans-serif",
-      fontWeight: "bold",
-      boxSizing: "border-box",
-      pointerEvents: "none",
+      backgroundColor: '#000',
+      color: '#00ffff',
+      fontSize: '9px',
+      lineHeight: '10px',
+      fontFamily: 'Helvetica, Arial, sans-serif',
+      fontWeight: 'bold',
+      boxSizing: 'border-box',
+      pointerEvents: 'none',
       top: top,
       right: right,
       bottom: bottom,
@@ -123,25 +123,25 @@ function FPSStats(_ref) {
     }
   }, /*#__PURE__*/_react["default"].createElement("span", null, fps[len - 1], " FPS"), /*#__PURE__*/_react["default"].createElement("div", {
     style: {
-      position: "absolute",
+      position: 'absolute',
       left: 3,
       right: 3,
       bottom: 3,
       height: graphHeight,
-      background: "#282844",
-      boxSizing: "border-box"
+      background: '#282844',
+      boxSizing: 'border-box'
     }
   }, fps.map(function (frame, i) {
     return /*#__PURE__*/_react["default"].createElement("div", {
       key: "fps-".concat(i),
       style: {
-        position: "absolute",
+        position: 'absolute',
         bottom: 0,
         right: "".concat(len - 1 - i, "px"),
         height: "".concat(graphHeight * frame / max, "px"),
         width: 1,
-        background: "#00ffff",
-        boxSizing: "border-box"
+        background: '#00ffff',
+        boxSizing: 'border-box'
       }
     });
   })));
