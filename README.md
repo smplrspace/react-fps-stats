@@ -37,7 +37,7 @@ Graph height and the graph width can be set via the `graphHeight` and `graphWidt
 
 ## Alternatives
 
-If you are only using this for development purpose and your users don't need to see it, you can consider using the [Chrome Devtools FPS Meter](https://developer.chrome.com/devtools/docs/rendering-settings#show-fps%20meter).
+If you are only using this for development purpose and your users don't need to see it, you can consider using the [Chrome Devtools FPS Meter](https://developer.chrome.com/blog/new-in-devtools-61/#fps-meter).
 
 ## Contributing
 
