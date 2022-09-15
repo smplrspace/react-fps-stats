@@ -61,11 +61,11 @@ function FPSStats(_ref) {
     var currentTime = Date.now();
 
     if (currentTime > state.prevTime + 1000) {
-      var nextFPS = Math.round(state.frames * 1000 / (currentTime - state.prevTime));
+      var nextFPS = [].concat(_toConsumableArray(new Array(Math.floor((currentTime - state.prevTime - 1000) / 1000)).fill(0)), [Math.max(1, Math.round(state.frames * 1000 / (currentTime - state.prevTime)))]);
       return {
-        max: Math.max(state.max, nextFPS),
-        len: Math.min(state.len + 1, graphWidth),
-        fps: [].concat(_toConsumableArray(state.fps), [nextFPS]).slice(-graphWidth),
+        max: Math.max.apply(Math, [state.max].concat(_toConsumableArray(nextFPS))),
+        len: Math.min(state.len + nextFPS.length, graphWidth),
+        fps: [].concat(_toConsumableArray(state.fps), _toConsumableArray(nextFPS)).slice(-graphWidth),
         frames: 1,
         prevTime: currentTime
       };
