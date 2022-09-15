@@ -48,7 +48,7 @@ This is a tiny library with little activity, no process, just reach out ;)
 Just a reminder for the maintainer ;)
 
 - run `yarn build`
-- bump version
+- bump version in `package.json`
 - commit / push / merge PR
 - tag version `v__` to create release
 - add changelog to release note
