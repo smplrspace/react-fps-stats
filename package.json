@@ -1,6 +1,6 @@
 {
   "name": "react-fps-stats",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "FPS Stats in React",
   "repository": "https://github.com/smplrspace/react-fps-stats",
   "author": "Thibaut Tiberghien <thibaut@smplrspace.com>",
