@@ -9,6 +9,13 @@ function FPSStats ({
   graphHeight = 29,
   graphWidth = 70
 }) {
+  const padding = 3
+  const textLineHeight = 10
+  const extraGap = 1
+  const numericGraphHeight = Number(graphHeight)
+  const totalHeight = Number.isFinite(numericGraphHeight)
+    ? numericGraphHeight + padding * 2 + textLineHeight + extraGap
+    : 46
   const [state, dispatch] = useReducer(
     state => {
       const currentTime = Date.now()
@@ -60,13 +67,13 @@ function FPSStats ({
       style={{
         zIndex: 999999,
         position: 'fixed',
-        height: 46,
+        height: totalHeight,
         width: graphWidth + 6,
-        padding: 3,
+        padding,
         backgroundColor: '#000',
         color: '#00ffff',
         fontSize: '9px',
-        lineHeight: '10px',
+        lineHeight: `${textLineHeight}px`,
         fontFamily: 'Helvetica, Arial, sans-serif',
         fontWeight: 'bold',
         boxSizing: 'border-box',
@@ -81,9 +88,9 @@ function FPSStats ({
       <div
         style={{
           position: 'absolute',
-          left: 3,
-          right: 3,
-          bottom: 3,
+          left: padding,
+          right: padding,
+          bottom: padding,
           height: graphHeight,
           background: '#282844',
           boxSizing: 'border-box'
