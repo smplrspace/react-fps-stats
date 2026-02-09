@@ -33,7 +33,7 @@ Try it on [CodeSandbox](https://codesandbox.io/embed/github/tibotiber/react-fps-
 
 By default, the meter is fixed positioned in the top left of the screen. You can pass the optional props `top`, `right`, `bottom` & `left` to overrride that positioning. Each prop maps to the css values and can use either string or number format. `top` and `left` have values by default, so pass `'auto'` as their values if you want to use `bottom` or `right` values.
 
-Graph height and the graph width can be set via the `graphHeight` and `graphWidth` props.
+Graph height and the graph width can be set via the `graphHeight` and `graphWidth` props. Default values are 29px in height and 70px in width.
 
 ## Alternatives
 
