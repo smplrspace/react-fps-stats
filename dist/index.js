@@ -56,6 +56,11 @@ function FPSStats(_ref) {
       graphHeight = _ref$graphHeight === void 0 ? 29 : _ref$graphHeight,
       _ref$graphWidth = _ref.graphWidth,
       graphWidth = _ref$graphWidth === void 0 ? 70 : _ref$graphWidth;
+  var padding = 3;
+  var textLineHeight = 10;
+  var extraGap = 1;
+  var numericGraphHeight = Number(graphHeight);
+  var totalHeight = Number.isFinite(numericGraphHeight) ? numericGraphHeight + padding * 2 + textLineHeight + extraGap : 46;
 
   var _useReducer = (0, _react.useReducer)(function (state) {
     var currentTime = Date.now();
@@ -105,13 +110,13 @@ function FPSStats(_ref) {
     style: {
       zIndex: 999999,
       position: 'fixed',
-      height: 46,
+      height: totalHeight,
       width: graphWidth + 6,
-      padding: 3,
+      padding: padding,
       backgroundColor: '#000',
       color: '#00ffff',
       fontSize: '9px',
-      lineHeight: '10px',
+      lineHeight: "".concat(textLineHeight, "px"),
       fontFamily: 'Helvetica, Arial, sans-serif',
       fontWeight: 'bold',
       boxSizing: 'border-box',
@@ -124,9 +129,9 @@ function FPSStats(_ref) {
   }, /*#__PURE__*/_react["default"].createElement("span", null, fps[len - 1], " FPS"), /*#__PURE__*/_react["default"].createElement("div", {
     style: {
       position: 'absolute',
-      left: 3,
-      right: 3,
-      bottom: 3,
+      left: padding,
+      right: padding,
+      bottom: padding,
       height: graphHeight,
       background: '#282844',
       boxSizing: 'border-box'
