@@ -17,12 +17,6 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -30,6 +24,12 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -61,16 +61,31 @@ function FPSStats(_ref) {
   var extraGap = 1;
   var numericGraphHeight = Number(graphHeight);
   var totalHeight = Number.isFinite(numericGraphHeight) ? numericGraphHeight + padding * 2 + textLineHeight + extraGap : 46;
+  var numericGraphWidth = Number(graphWidth);
+  var maxGraphSamples = Number.isFinite(numericGraphWidth) ? Math.max(0, Math.floor(numericGraphWidth)) : 70;
 
   var _useReducer = (0, _react.useReducer)(function (state) {
     var currentTime = Date.now();
 
+    if (currentTime < state.prevTime) {
+      return _objectSpread(_objectSpread({}, state), {}, {
+        frames: 1,
+        prevTime: currentTime
+      });
+    }
+
     if (currentTime > state.prevTime + 1000) {
-      var nextFPS = [].concat(_toConsumableArray(new Array(Math.floor((currentTime - state.prevTime - 1000) / 1000)).fill(0)), [Math.max(1, Math.round(state.frames * 1000 / (currentTime - state.prevTime)))]);
+      var missedSeconds = Math.floor((currentTime - state.prevTime - 1000) / 1000);
+      var zeroCount = Math.min(missedSeconds, Math.max(0, maxGraphSamples - 1));
+      var currentFPS = Math.max(1, Math.round(state.frames * 1000 / (currentTime - state.prevTime)));
+      var nextFPS = [].concat(_toConsumableArray(new Array(zeroCount).fill(0)), [currentFPS]);
+
+      var _fps = maxGraphSamples > 0 ? [].concat(_toConsumableArray(state.fps), _toConsumableArray(nextFPS)).slice(-maxGraphSamples) : [];
+
       return {
-        max: Math.max.apply(Math, [state.max].concat(_toConsumableArray(nextFPS))),
-        len: Math.min(state.len + nextFPS.length, graphWidth),
-        fps: [].concat(_toConsumableArray(state.fps), _toConsumableArray(nextFPS)).slice(-graphWidth),
+        max: Math.max(state.max, currentFPS),
+        len: _fps.length,
+        fps: _fps,
         frames: 1,
         prevTime: currentTime
       };

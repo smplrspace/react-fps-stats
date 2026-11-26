@@ -16,23 +16,37 @@ function FPSStats ({
   const totalHeight = Number.isFinite(numericGraphHeight)
     ? numericGraphHeight + padding * 2 + textLineHeight + extraGap
     : 46
+  const numericGraphWidth = Number(graphWidth)
+  const maxGraphSamples = Number.isFinite(numericGraphWidth)
+    ? Math.max(0, Math.floor(numericGraphWidth))
+    : 70
   const [state, dispatch] = useReducer(
     state => {
       const currentTime = Date.now()
+      if (currentTime < state.prevTime) {
+        return { ...state, frames: 1, prevTime: currentTime }
+      }
       if (currentTime > state.prevTime + 1000) {
-        const nextFPS = [
-          ...new Array(
-            Math.floor((currentTime - state.prevTime - 1000) / 1000)
-          ).fill(0),
-          Math.max(
-            1,
-            Math.round((state.frames * 1000) / (currentTime - state.prevTime))
-          )
-        ]
+        const missedSeconds = Math.floor(
+          (currentTime - state.prevTime - 1000) / 1000
+        )
+        const zeroCount = Math.min(
+          missedSeconds,
+          Math.max(0, maxGraphSamples - 1)
+        )
+        const currentFPS = Math.max(
+          1,
+          Math.round((state.frames * 1000) / (currentTime - state.prevTime))
+        )
+        const nextFPS = [...new Array(zeroCount).fill(0), currentFPS]
+        const fps =
+          maxGraphSamples > 0
+            ? [...state.fps, ...nextFPS].slice(-maxGraphSamples)
+            : []
         return {
-          max: Math.max(state.max, ...nextFPS),
-          len: Math.min(state.len + nextFPS.length, graphWidth),
-          fps: [...state.fps, ...nextFPS].slice(-graphWidth),
+          max: Math.max(state.max, currentFPS),
+          len: fps.length,
+          fps,
           frames: 1,
           prevTime: currentTime
         }
